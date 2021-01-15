@@ -28,8 +28,8 @@ public enum ImageRenderingMode {
 }
 
 @objc public protocol SketchViewDelegate: NSObjectProtocol  {
-    @objc optional func drawView(_ view: SketchView, willBeginDrawUsingTool tool: AnyObject)
-    @objc optional func drawView(_ view: SketchView, didEndDrawUsingTool tool: AnyObject)
+    @objc optional func drawView(_ view: SketchView, willBeginDrawUsingTool tool: AnyObject?)
+    @objc optional func drawView(_ view: SketchView, didEndDrawUsingTool tool: AnyObject?)
 }
 
 public class SketchView: UIView {
@@ -163,7 +163,7 @@ public class SketchView: UIView {
         currentTool?.lineColor = lineColor
         currentTool?.lineAlpha = lineAlpha
 
-        sketchViewDelegate?.drawView?(self, willBeginDrawUsingTool: currentTool! as AnyObject)
+        sketchViewDelegate?.drawView?(self, willBeginDrawUsingTool: currentTool as? AnyObject)
         
         switch currentTool! {
         case is PenTool:
@@ -208,7 +208,7 @@ public class SketchView: UIView {
     fileprivate func finishDrawing() {
         updateCacheImage(false)
         bufferArray.removeAllObjects()
-        sketchViewDelegate?.drawView?(self, didEndDrawUsingTool: currentTool! as AnyObject)
+        sketchViewDelegate?.drawView?(self, didEndDrawUsingTool: currentTool as? AnyObject)
         currentTool = nil
     }
 
