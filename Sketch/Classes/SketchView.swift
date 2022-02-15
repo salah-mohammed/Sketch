@@ -79,7 +79,7 @@ public class SketchView: UIView {
             break
         case .aspectFit:
             var ratio = UIImage.bs_aspectFitSize(imageSize: self.image?.size ?? CGSize.zero, frameSize: self.bounds.size)
-            var rect = CGRect.init(origin: self.bounds.origin, size: ratio)
+            var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:0), size: ratio)
             image?.draw(in:rect)
         }
 
@@ -103,7 +103,7 @@ public class SketchView: UIView {
             case .aspectFit:
                 if let backgroundImage:UIImage = self.backgroundImage{
                 var ratio = UIImage.bs_aspectFitSize(imageSize:backgroundImage.size, frameSize: self.bounds.size)
-                var rect = CGRect.init(origin: self.bounds.origin, size: ratio)
+                var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:0), size: ratio)
                 (backgroundImage.copy() as! UIImage).draw(in:rect)
                 }
                 break;
@@ -124,7 +124,7 @@ public class SketchView: UIView {
             case .aspectFit:
                 if let image:UIImage = self.image{
                 var ratio = UIImage.bs_aspectFitSize(imageSize:image.size ?? CGSize.zero, frameSize: self.bounds.size)
-                var rect = CGRect.init(origin: self.bounds.origin, size: ratio)
+                var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:0), size: ratio)
                 image.draw(in:rect)
                 }
                 break
@@ -270,6 +270,7 @@ public class SketchView: UIView {
 
     public func undo() {
         if canUndo() {
+            self.sketchViewDelegate?.drawView?(self, willBeginDrawUsingTool: self)
             guard let tool = pathArray.lastObject as? SketchTool else { return }
             resetTool()
             bufferArray.add(tool)
@@ -277,11 +278,13 @@ public class SketchView: UIView {
             updateCacheImage(true)
 
             setNeedsDisplay()
+            self.sketchViewDelegate?.drawView?(self, didEndDrawUsingTool: self);
         }
     }
 
     public func redo() {
         if canRedo() {
+            self.sketchViewDelegate?.drawView?(self, willBeginDrawUsingTool: self)
             guard let tool = bufferArray.lastObject as? SketchTool else { return }
             resetTool()
             pathArray.add(tool)
@@ -289,6 +292,7 @@ public class SketchView: UIView {
             updateCacheImage(true)
 
             setNeedsDisplay()
+            self.sketchViewDelegate?.drawView?(self, didEndDrawUsingTool: self);
         }
     }
 
