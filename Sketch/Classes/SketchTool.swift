@@ -444,6 +444,13 @@ class FillTool: SketchTool {
         guard let cgimg = context.makeImage() else { return  }
         let ptinImg = CGPoint(x: touchPoint.x * UIScreen.main.scale, y: touchPoint.y * UIScreen.main.scale)
         let img = UIImage(cgImage: cgimg)
+        var pixelColor = img.pixelColor(atLocation: ptinImg);
+        if  pixelColor?.redValue == pixelColor?.blueValue &&
+            pixelColor?.redValue == pixelColor?.blueValue &&
+            pixelColor?.alphaValue == 1 &&
+            pixelColor?.redValue ?? 0 < 0.2{
+            return
+        }
         if let imgFilled = img.fill(pt: ptinImg, color: lineColor, colorCompare: nil) {
             imgFilled.draw(in: CGRect(x: 0,
                                       y: 0,
@@ -451,4 +458,30 @@ class FillTool: SketchTool {
                                       height: CGFloat(context.height) / UIScreen.main.scale))
         }
     }
+}
+
+extension UIImage {
+    func pixelColor(atLocation point: CGPoint) -> UIColor? {
+        guard let cgImage = cgImage, let pixelData = cgImage.dataProvider?.data else { return nil }
+
+        let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+
+        let bytesPerPixel = cgImage.bitsPerPixel / 8
+
+        let pixelInfo: Int = ((cgImage.bytesPerRow * Int(point.y)) + (Int(point.x) * bytesPerPixel))
+
+        let b = CGFloat(data[pixelInfo]) / CGFloat(255.0)
+        let g = CGFloat(data[pixelInfo+1]) / CGFloat(255.0)
+        let r = CGFloat(data[pixelInfo+2]) / CGFloat(255.0)
+        let a = CGFloat(data[pixelInfo+3]) / CGFloat(255.0)
+
+        return UIColor(red: r, green: g, blue: b, alpha: a)
+    }
+    
+}
+extension UIColor {
+    var redValue: CGFloat{ return CIColor(color: self).red }
+    var greenValue: CGFloat{ return CIColor(color: self).green }
+    var blueValue: CGFloat{ return CIColor(color: self).blue }
+    var alphaValue: CGFloat{ return CIColor(color: self).alpha }
 }

@@ -225,12 +225,12 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = QSJ4FM97GU;
+						DevelopmentTeam = 8C7RSZ7C3V;
 						LastSwiftMigration = 1000;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = QSJ4FM97GU;
+						DevelopmentTeam = 8C7RSZ7C3V;
 						LastSwiftMigration = 1110;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -514,7 +514,7 @@
 			baseConfigurationReference = CA9226DBE75E756E5272A2D8 /* Pods-Sketch_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = QSJ4FM97GU;
+				DEVELOPMENT_TEAM = 8C7RSZ7C3V;
 				INFOPLIST_FILE = Sketch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -530,7 +530,7 @@
 			baseConfigurationReference = 73AE724E860E67FD70FACB8C /* Pods-Sketch_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = QSJ4FM97GU;
+				DEVELOPMENT_TEAM = 8C7RSZ7C3V;
 				INFOPLIST_FILE = Sketch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -545,7 +545,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BADAECBD89715968D141E93C /* Pods-Sketch_Tests.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = QSJ4FM97GU;
+				DEVELOPMENT_TEAM = 8C7RSZ7C3V;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -564,7 +564,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7ECFEBF94BD73961967E70CA /* Pods-Sketch_Tests.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = QSJ4FM97GU;
+				DEVELOPMENT_TEAM = 8C7RSZ7C3V;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
