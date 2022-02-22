@@ -79,7 +79,7 @@ public class SketchView: UIView {
             break
         case .aspectFit:
             var ratio = UIImage.bs_aspectFitSize(imageSize: self.image?.size ?? CGSize.zero, frameSize: self.bounds.size)
-            var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:0), size: ratio)
+            var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:self.bounds.midY-(ratio.height/2)), size: ratio)
             image?.draw(in:rect)
         }
 
@@ -103,7 +103,7 @@ public class SketchView: UIView {
             case .aspectFit:
                 if let backgroundImage:UIImage = self.backgroundImage{
                 var ratio = UIImage.bs_aspectFitSize(imageSize:backgroundImage.size, frameSize: self.bounds.size)
-                var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:0), size: ratio)
+                var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:self.bounds.midY-(ratio.height/2)), size: ratio)
                 (backgroundImage.copy() as! UIImage).draw(in:rect)
                 }
                 break;
@@ -124,7 +124,7 @@ public class SketchView: UIView {
             case .aspectFit:
                 if let image:UIImage = self.image{
                 var ratio = UIImage.bs_aspectFitSize(imageSize:image.size ?? CGSize.zero, frameSize: self.bounds.size)
-                var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:0), size: ratio)
+                var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:self.bounds.midY-(ratio.height/2)), size: ratio)
                 image.draw(in:rect)
                 }
                 break
