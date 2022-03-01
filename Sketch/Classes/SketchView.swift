@@ -123,7 +123,7 @@ public class SketchView: UIView {
                 break
             case .aspectFit:
                 if let image:UIImage = self.image{
-                let ratio = UIImage.bs_aspectFitSize(imageSize:image.size ?? CGSize.zero, frameSize: self.bounds.size)
+                let ratio = UIImage.bs_aspectFitSize(imageSize:image.size, frameSize: self.bounds.size)
                 let rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:self.bounds.midY-(ratio.height/2)), size: ratio)
                 image.draw(in:rect)
                 }
