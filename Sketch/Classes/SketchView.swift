@@ -123,8 +123,8 @@ public class SketchView: UIView {
                 break
             case .aspectFit:
                 if let image:UIImage = self.image{
-                var ratio = UIImage.bs_aspectFitSize(imageSize:image.size ?? CGSize.zero, frameSize: self.bounds.size)
-                var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:self.bounds.midY-(ratio.height/2)), size: ratio)
+                let ratio = UIImage.bs_aspectFitSize(imageSize:image.size ?? CGSize.zero, frameSize: self.bounds.size)
+                let rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:self.bounds.midY-(ratio.height/2)), size: ratio)
                 image.draw(in:rect)
                 }
                 break
@@ -311,7 +311,7 @@ public class SketchView: UIView {
 }
 extension UIImage{
     class public func bs_aspectFitSize(imageSize:CGSize,frameSize:CGSize)->CGSize{
-    var aspect = ((imageSize.width) / (imageSize.height))
+    let aspect = ((imageSize.width) / (imageSize.height))
     if ((frameSize.width / aspect) <= frameSize.height)
       {
         return CGSize.init(width: frameSize.width, height: frameSize.width/aspect)
