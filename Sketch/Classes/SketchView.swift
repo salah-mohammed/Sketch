@@ -35,6 +35,17 @@ public enum ImageRenderingMode {
 }
 
 public class SketchView: UIView {
+    private var maskLayer: CALayer?
+
+    public var maskImage: UIImage? {
+        didSet {
+            //mask
+            maskLayer = CALayer()
+            maskLayer?.frame = self.frame
+            maskLayer?.contents = maskImage?.cgImage
+            self.layer.mask = maskLayer
+        }
+    }
     public var lineColor = UIColor.black
     public var lineWidth = CGFloat(10)
     public var lineAlpha = CGFloat(1)
