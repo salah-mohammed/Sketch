@@ -30,8 +30,8 @@ public enum ImageRenderingMode {
 }
 
 @objc public protocol SketchViewDelegate: NSObjectProtocol  {
-    @objc optional func drawView(_ view: SketchView, willBeginDrawUsingTool tool: AnyObject)
-    @objc optional func drawView(_ view: SketchView, didEndDrawUsingTool tool: AnyObject)
+    @objc optional func drawView(_ view: SketchView, willBeginDrawUsingTool tool: AnyObject?)
+    @objc optional func drawView(_ view: SketchView, didEndDrawUsingTool tool: AnyObject?)
 }
 
 public class SketchView: UIView {
@@ -78,8 +78,8 @@ public class SketchView: UIView {
 
             break
         case .aspectFit:
-            var ratio = UIImage.bs_aspectFitSize(imageSize: self.image?.size ?? CGSize.zero, frameSize: self.bounds.size)
-            var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:0), size: ratio)
+            let ratio = UIImage.bs_aspectFitSize(imageSize: self.image?.size ?? CGSize.zero, frameSize: self.bounds.size)
+            let rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:self.bounds.midY-(ratio.height/2)), size: ratio)
             image?.draw(in:rect)
         }
 
@@ -94,17 +94,17 @@ public class SketchView: UIView {
             switch drawMode {
             case .original:
                 if let backgroundImage = backgroundImage  {
-                    (backgroundImage.copy() as! UIImage).draw(at: CGPoint.zero)
+                    (backgroundImage.copy() as? UIImage)?.draw(at: CGPoint.zero)
                 }
                 break
             case .scale:
-                (backgroundImage?.copy() as! UIImage).draw(in:self.bounds)
+                (backgroundImage?.copy() as? UIImage)?.draw(in:self.bounds)
                 break
             case .aspectFit:
                 if let backgroundImage:UIImage = self.backgroundImage{
-                var ratio = UIImage.bs_aspectFitSize(imageSize:backgroundImage.size, frameSize: self.bounds.size)
-                var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:0), size: ratio)
-                (backgroundImage.copy() as! UIImage).draw(in:rect)
+                let ratio = UIImage.bs_aspectFitSize(imageSize:backgroundImage.size, frameSize: self.bounds.size)
+                let rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:self.bounds.midY-(ratio.height/2)), size: ratio)
+                (backgroundImage.copy() as? UIImage)?.draw(in:rect)
                 }
                 break;
             }
@@ -123,8 +123,8 @@ public class SketchView: UIView {
                 break
             case .aspectFit:
                 if let image:UIImage = self.image{
-                var ratio = UIImage.bs_aspectFitSize(imageSize:image.size ?? CGSize.zero, frameSize: self.bounds.size)
-                var rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:0), size: ratio)
+                let ratio = UIImage.bs_aspectFitSize(imageSize:image.size, frameSize: self.bounds.size)
+                let rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:self.bounds.midY-(ratio.height/2)), size: ratio)
                 image.draw(in:rect)
                 }
                 break
@@ -185,7 +185,7 @@ public class SketchView: UIView {
         currentTool?.lineColor = lineColor
         currentTool?.lineAlpha = lineAlpha
 
-        sketchViewDelegate?.drawView?(self, willBeginDrawUsingTool: currentTool! as AnyObject)
+        sketchViewDelegate?.drawView?(self, willBeginDrawUsingTool: currentTool as AnyObject)
         
         switch currentTool! {
         case is PenTool:
@@ -212,12 +212,17 @@ public class SketchView: UIView {
         previousPoint1 = touch.previousLocation(in: self)
         currentPoint = touch.location(in: self)
 
-        if let penTool = currentTool as? PenTool {
-            let renderingBox = penTool.createBezierRenderingBox(previousPoint2!, widhPreviousPoint: previousPoint1!, withCurrentPoint: currentPoint!)
+        if let penTool = currentTool as? PenTool,
+            let previousPoint2:CGPoint=previousPoint2,
+            let previousPoint1:CGPoint=previousPoint1,
+            let currentPoint:CGPoint=currentPoint{
+            let renderingBox = penTool.createBezierRenderingBox(previousPoint2, widhPreviousPoint: previousPoint1, withCurrentPoint: currentPoint)
 
             setNeedsDisplay(renderingBox)
-        } else {
-            currentTool?.moveFromPoint(previousPoint1!, toPoint: currentPoint!)
+        } else
+        if let previousPoint1:CGPoint = previousPoint1,
+           let currentPoint:CGPoint=currentPoint{
+            currentTool?.moveFromPoint(previousPoint1, toPoint: currentPoint)
             setNeedsDisplay()
         }
     }
@@ -230,7 +235,7 @@ public class SketchView: UIView {
     fileprivate func finishDrawing() {
         updateCacheImage(false)
         bufferArray.removeAllObjects()
-        sketchViewDelegate?.drawView?(self, didEndDrawUsingTool: currentTool! as AnyObject)
+        sketchViewDelegate?.drawView?(self, didEndDrawUsingTool: currentTool as AnyObject)
         currentTool = nil
     }
 
@@ -306,7 +311,7 @@ public class SketchView: UIView {
 }
 extension UIImage{
     class public func bs_aspectFitSize(imageSize:CGSize,frameSize:CGSize)->CGSize{
-    var aspect = ((imageSize.width) / (imageSize.height))
+    let aspect = ((imageSize.width) / (imageSize.height))
     if ((frameSize.width / aspect) <= frameSize.height)
       {
         return CGSize.init(width: frameSize.width, height: frameSize.width/aspect)
