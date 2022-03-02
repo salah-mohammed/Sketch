@@ -37,13 +37,17 @@ public enum ImageRenderingMode {
 public class SketchView: UIView {
     private var maskLayer: CALayer?
 
+    // should use in viewDidAppear
     public var maskImage: UIImage? {
         didSet {
-            //mask
+            if let maskImage:UIImage=maskImage{
             maskLayer = CALayer()
-            maskLayer?.frame = self.frame
-            maskLayer?.contents = maskImage?.cgImage
+            let ratio = UIImage.bs_aspectFitSize(imageSize:maskImage.size, frameSize: self.bounds.size)
+            let rect = CGRect.init(origin:CGPoint.init(x:self.bounds.midX-(ratio.width/2), y:self.bounds.midY-(ratio.height/2)), size: ratio)
+            maskLayer?.frame = rect
+            maskLayer?.contents = maskImage.cgImage
             self.layer.mask = maskLayer
+            }
         }
     }
     public var lineColor = UIColor.black
