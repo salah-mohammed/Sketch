@@ -47,6 +47,8 @@ public class SketchView: UIView {
             maskLayer?.frame = rect
             maskLayer?.contents = maskImage.cgImage
             self.layer.mask = maskLayer
+            }else{
+                self.layer.mask=nil
             }
         }
     }
