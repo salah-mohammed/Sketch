@@ -325,6 +325,12 @@ public class SketchView: UIView {
     public func canRedo() -> Bool {
         return bufferArray.count > 0
     }
+    public func removeImage(){
+         self.image = nil
+         backgroundImage = nil
+         updateCacheImage(true)
+         setNeedsDisplay()
+     }
 }
 extension UIImage{
     class public func bs_aspectFitSize(imageSize:CGSize,frameSize:CGSize)->CGSize{
