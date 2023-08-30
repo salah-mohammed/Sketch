@@ -419,7 +419,7 @@ class StampTool: SketchTool {
     }
 }
 
-class FillTool: SketchTool {
+public class FillTool: SketchTool {
     var lineWidth: CGFloat
     var lineColor: UIColor
     var lineAlpha: CGFloat
