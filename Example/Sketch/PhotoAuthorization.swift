@@ -70,6 +70,8 @@ final class PhotoAuthorization {
                     }
                 }
             }
+        @unknown default:
+            break
         }
     }
 }
